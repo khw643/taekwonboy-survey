@@ -5,7 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#176b58">
   <title>대학 활동이 대학생의 진로 선택에 미친 영향</title>
-  <script>window.surveyStartedAt = new Date().toISOString(); window.surveyStartClock = performance.now();</script>
+  <script>
+    // ===== Firebase 설정: taekwon-survey-4c340 웹 앱 =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyAlZtx1lS82ZIip8LQcT6GEHwJ5nLl3pFw",
+      authDomain: "taekwon-survey-4c340.firebaseapp.com",
+      projectId: "taekwon-survey-4c340",
+      storageBucket: "taekwon-survey-4c340.firebasestorage.app",
+      messagingSenderId: "80962254760",
+      appId: "1:80962254760:web:f77cdc44c45ffdcaaf0f9d"
+    };
+    // Console의 데이터베이스 ID와 일치해야 합니다. 이름 있는 DB라면 해당 ID로 교체하세요.
+    // Enterprise Native 사용 시 실시간 업데이트가 활성화된 DB가 필요합니다.
+    const FIRESTORE_DATABASE_ID = "taekwon-survey";
+    window.surveyStartedAt = new Date().toISOString();
+    window.surveyStartClock = performance.now();
+  </script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
   <style>
     :root{--ink:#203a35;--muted:#61736d;--green:#176b58;--light:#edf6f1;--line:#dce7e1;--paper:#f7f9f7}
@@ -23,7 +38,7 @@
     <h1 id="title">대학 활동이 대학생의<br>진로 선택에 미친 영향</h1>
     <p class="intro">대학생들이 대학생활 중 경험하는 다양한 활동이 자신의 진로 선택과 구체화에 어느 정도 영향을 미쳤는지 알아보기 위한 설문입니다. 특히 전공 계열에 따라 어떤 대학 활동의 영향력이 다르게 나타나는지 비교하고자 합니다.</p>
     <div class="meta"><span>6개 문항 · 5점 척도</span><span>전공 계열별 비교</span><span id="timer" class="timer" role="timer">현재 설문 참여 시간 00:00</span></div>
-    <div class="notice"><strong>현재는 브라우저 체험 버전입니다.</strong>응답은 이 브라우저에만 저장됩니다. 다른 기기·다른 참여자의 응답은 아직 합산되지 않으며, 서버 연결 후 실시간 공동 집계가 가능합니다. 예시 응답은 포함하지 않습니다.</div>
+    <div class="notice"><strong>함께 만드는 설문 결과</strong>제출한 응답은 서버에 저장되며, 응답 제출 후 전체 결과와 전공 계열별 비교를 확인할 수 있습니다. 새로운 응답이 반영되면 결과도 자동으로 갱신됩니다.<p id="connectionStatus" class="status" role="status">서버 연결을 확인하고 있습니다…</p><button id="retryConnection" class="secondary" type="button" hidden>연결 다시 확인</button></div>
   </section>
   <noscript><p class="notice">설문 참여와 결과 확인을 위해 브라우저의 JavaScript를 켜 주세요.</p></noscript>
   <form id="surveyForm">
@@ -37,28 +52,31 @@
   <section class="card reward" aria-labelledby="rewardTitle">
     <h2 id="rewardTitle">🎁 기프티콘 수령 정보 (선택)</h2>
     <p class="small">설문 참여에 대한 보상이 제공되는 경우 연락을 위해 사용됩니다. 아래 정보는 선택적으로 입력할 수 있으며, 설문 응답과 별도로 저장되고 설문 결과 분석에는 사용되지 않습니다.</p>
-    <p class="small"><strong>현재는 제출 동작 확인용입니다.</strong>실제 보상 신청은 접수되지 않습니다. 실제 개인정보 대신 테스트 정보를 입력해 주세요. 입력 정보는 서버·브라우저 저장소에 저장되지 않고, 페이지를 닫거나 새로고침하면 사라집니다.</p>
+    <p class="small">입력한 이름과 전화번호는 기프티콘 발송을 위한 연락 목적으로만 사용되며 설문 응답과 별도로 저장됩니다. 기프티콘 제공 여부와 발송 일정은 설문 운영자의 안내를 확인해 주세요.</p>
     <form id="rewardForm">
-      <div class="fields"><label for="rewardName">이름<input id="rewardName" name="name" autocomplete="off" maxlength="40" placeholder="예: 테스트" required></label><label for="rewardPhone">전화번호<input id="rewardPhone" name="phone" type="tel" inputmode="tel" autocomplete="off" maxlength="15" placeholder="010-0000-0000" aria-describedby="phoneHelp" required></label></div>
+      <div class="fields"><label for="rewardName">이름<input id="rewardName" name="name" autocomplete="off" maxlength="40" placeholder="이름을 입력해 주세요" required></label><label for="rewardPhone">전화번호<input id="rewardPhone" name="phone" type="tel" inputmode="tel" autocomplete="off" maxlength="15" placeholder="010-0000-0000" aria-describedby="phoneHelp" required></label></div>
       <p class="small" id="phoneHelp">010·011·016·017·018·019로 시작하는 휴대전화 번호 · 하이픈 없이도 입력 가능</p>
-      <label class="consent"><input type="checkbox" required>테스트용 이름과 전화번호를 이번 페이지에서 임시 처리하는 데 동의합니다. 입력하지 않아도 설문에 참여할 수 있습니다.</label>
+      <label class="consent"><input type="checkbox" required>기프티콘 발송 연락을 위한 이름·전화번호 수집 및 이용에 동의합니다. 동의하지 않아도 설문에 참여할 수 있습니다.</label>
       <button id="submitReward" class="secondary" type="submit">기프티콘 수령 정보 제출</button><p id="rewardStatus" class="status" role="status"></p>
     </form>
   </section>
   <section id="results" hidden aria-labelledby="resultTitle">
-    <div class="result-heading"><p class="eyebrow">SURVEY RESULTS</p><h2 id="resultTitle" tabindex="-1">당신의 경험이 결과에 더해졌습니다.</h2><p id="durationText" class="timer"></p><p class="small">이 브라우저에 저장된 응답 기준 · 본인 응답 포함 · 새 응답 수신 시 자동 갱신</p></div>
+    <div class="result-heading"><p class="eyebrow">SURVEY RESULTS</p><h2 id="resultTitle" tabindex="-1">응답이 제출되었습니다.</h2><p id="durationText" class="timer"></p><p class="small">서버에 저장된 전체 응답 기준 · 본인 응답 포함 · 새 응답 수신 시 자동 갱신</p></div>
+    <p id="resultsLiveStatus" class="status" role="status">전체 결과를 불러오고 있습니다…</p>
+    <div id="resultData" hidden>
     <div class="stats"><div class="stat"><span class="small">전체 응답 수</span><strong id="totalCount">0명</strong></div><div class="stat"><span class="small">응답이 있는 전공 계열</span><strong id="groupCount">0개</strong></div></div>
     <p id="chartStatus" class="status error" role="status"></p>
     <article class="card"><h3>전체 응답 결과</h3><p class="small">활동별 평균 점수 · 1~5점, 높을수록 큰 영향</p><div class="chart-wrap"><canvas id="overallChart" role="img" aria-label="활동별 전체 평균 막대그래프. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="overallTable" class="table-wrap"></div></article>
     <article class="card"><h3>전공 계열별 비교</h3><p class="small">선택한 계열과 전체 평균을 함께 비교해 보세요.</p><label class="filter small" for="majorFilter">비교할 전공 계열<select id="majorFilter"><option value="">전체</option></select></label><p id="groupSummary" class="notice" role="status"></p><div class="chart-wrap"><canvas id="majorChart" role="img" aria-label="선택 전공과 전체 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="majorTable" class="table-wrap"></div></article>
     <article class="card"><h3>나의 응답과 전체 평균 비교</h3><p class="small">나의 경험은 전체 응답과 어떻게 다를까요?</p><div class="chart-wrap comparison"><canvas id="personalChart" role="img" aria-label="본인 응답과 전체 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="personalTable" class="table-wrap"></div></article>
     <p class="small">평균은 소수 둘째 자리까지 표시합니다. 응답이 없는 계열은 0점 대신 ‘응답 없음’으로 표시합니다. 표본 수와 참여 경험의 차이를 함께 고려해야 하며, 이 결과만으로 인과관계나 전체 대학생의 경향을 단정할 수 없습니다.</p>
+    </div>
   </section>
   <section class="about" aria-labelledby="aboutTitle"><p class="eyebrow">BEHIND THE SURVEY</p><h2 id="aboutTitle">이 설문에 대하여</h2>
     <h3>문항을 선택한 이유</h3><p>대학생활은 단순히 전공 지식을 배우는 것을 넘어 자신의 진로를 탐색하고 구체화하는 과정이라고 생각했다. 나 역시 대학에 입학하기 전부터 법조인이라는 진로에 관심을 가지고 있었지만, 건국법학회 활동을 통해 법학 관련 공부와 토론을 직접 경험하면서 로스쿨 진학이라는 구체적인 목표를 세우게 되었다. 이러한 경험을 바탕으로 다른 대학생들은 전공 수업, 동아리와 학회, 학생회, 대외활동, 대학에서 형성된 인간관계 등 다양한 대학 활동 중 어떤 경험의 영향을 받아 자신의 진로를 결정하거나 구체화하게 되었는지 알아보고자 본 설문 문항을 구성하였다. 또한 전공 계열별로 영향을 많이 받는 대학 활동에 차이가 있는지도 확인하고자 하였다.</p>
     <h3>추가 기능과 그 이유</h3><ol><li><strong>설문 응답 시간 측정</strong><p>설문 시작부터 제출까지의 시간을 실시간으로 측정하고 기록할 수 있도록 하였다. 설문 응답 시간이 지나치게 짧은 경우 문항을 충분히 읽지 않고 응답했을 가능성을 확인할 수 있기 때문에, 향후 설문 결과를 분석할 때 불성실 응답을 판단하는 보조적인 자료로 활용할 수 있도록 하기 위한 기능이다.</p><p>응답 시간만으로 불성실 응답을 단정하거나 응답을 자동으로 삭제하지 않는다. 측정 시간에는 페이지를 열어 둔 시간도 포함된다.</p></li><li><strong>기프티콘 수령 정보 별도 입력</strong><p>실제 설문조사에서는 참여자에게 감사의 의미로 소정의 기프티콘이나 보상을 제공하는 경우가 있다는 점을 고려하여 이름과 전화번호를 선택적으로 입력할 수 있는 별도의 영역을 추가하였다. 개인정보가 설문 분석 결과와 함께 활용되지 않도록 설문 응답과 연락처 정보를 분리하여 관리하는 구조로 설계하였다.</p></li></ol>
   </section>
-</main><footer>대학생 진로 경험 설문 · 대학 과제용 브라우저 체험 버전</footer>
+</main><footer>대학생 진로 경험 설문 · 대학 과제용</footer>
 <script>
 'use strict';
 const MAJORS=['인문계열','사회과학계열','경영·경제계열','자연과학계열','공학계열','예체능계열','의약·보건계열','기타'];
@@ -67,25 +85,118 @@ const QUESTIONS=['전공 수업 및 전공 학습 경험은 나의 진로 선택
 const SCALE=['전혀 영향을 주지 않았다','영향을 주지 않은 편이다','보통이다','영향을 준 편이다','매우 큰 영향을 주었다'];
 const $=id=>document.getElementById(id);
 const keys=QUESTIONS.map((_,i)=>'q'+(i+1));
-const state={responses:[],mine:null,submitting:false,charts:{}};
+const state={responses:[],mine:null,submitting:false,rewardSubmitting:false,rewardSubmitted:false,hasSnapshot:false,charts:{}};
 function validResponse(r){return r&&MAJORS.includes(r.majorGroup)&&keys.every(k=>Number.isInteger(r[k])&&r[k]>=1&&r[k]<=5)&&Number.isFinite(r.durationSeconds)&&r.durationSeconds>=0&&['surveyStartedAt','surveySubmittedAt','createdAt'].every(k=>typeof r[k]==='string'&&Number.isFinite(Date.parse(r[k])));}
 
-/* DATA ADAPTER — Firebase 연결 시 아래 두 저장소만 교체합니다.
- * responseRepository.add: responses에 요구된 11개 필드만 저장. 연락처/연락처 ID 금지.
- * responseRepository.subscribe: Firestore onSnapshot을 통해 전체 응답 배열 전달.
- * Firestore Timestamp는 UI에 전달하기 전에 ISO 문자열로 변환합니다.
- * rewardRepository.add: 별도 rewardContacts에 별도의 자동 ID로 저장.
- * 보상 연락처 읽기는 관리자만 허용. 실제 수집 전 수집 목적/보유기간/동의문 설정.
- * Firebase SDK, 설정, 인증, 보안 규칙은 현재 포함하지 않습니다.
+/* DATA ADAPTER — Standard 에디션 / taekwon-survey 데이터베이스.
+ * 실시간 결과 갱신에 필요한 Firestore Core onSnapshot을 사용합니다.
+ * 개인정보는 rewardContacts에만 저장하며 공통 식별자를 저장하지 않습니다.
  */
-const RESPONSE_PREFIX='campus-career:response:v1:';
-function readLocalResponses(){const rows=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(RESPONSE_PREFIX)){try{const r=JSON.parse(localStorage.getItem(k));if(validResponse(r))rows.push(r);}catch{/* 손상된 개별 기록만 제외 */}}}return rows;}
+let firebaseConnection = null;
+function appError(code){const error=new Error(code);error.code=code;return error;}
+function errorMessage(error){
+  const code=String(error?.code||'').replace(/^firestore\//,'');
+  if(code==='config-missing')return 'Firebase 설정이 아직 입력되지 않았습니다. 운영자는 index.html 상단의 firebaseConfig 값을 확인해 주세요.';
+  if(code==='permission-denied'||code==='unauthenticated')return '서버 접근 권한이 없습니다. 운영자는 Firestore 보안 규칙을 확인해 주세요.';
+  if(code==='offline')return '인터넷 연결이 끊어졌습니다. 연결 후 다시 시도해 주세요.';
+  if(code==='sdk-load'||code==='deadline-exceeded'||code==='unavailable')return '서버에 연결하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.';
+  if(code==='resource-exhausted')return '현재 서버 사용량 한도에 도달했습니다. 운영자에게 문의해 주세요.';
+  if(code==='not-found'||code==='failed-precondition')return '데이터베이스 설정을 확인해야 합니다. 운영자는 데이터베이스 ID와 실시간 업데이트 지원 여부를 확인해 주세요.';
+  if(code==='invalid-argument'||code==='invalid-response'||code==='invalid-contact')return '입력값 또는 Firebase 설정 형식을 확인해 주세요.';
+  return '요청을 완료하지 못했습니다. 잠시 후 다시 시도하고, 계속되면 운영자에게 문의해 주세요.';
+}
+function connectionMessage(message,isError=false){
+  $('connectionStatus').textContent=message;
+  $('connectionStatus').classList.toggle('error',isError);
+  $('retryConnection').hidden=!isError;
+  $('resultsLiveStatus').textContent=message;
+  $('resultsLiveStatus').classList.toggle('error',isError);
+}
+function getFirebase(){
+  if(firebaseConnection)return firebaseConnection;
+  firebaseConnection=(async()=>{
+    const required=['apiKey','authDomain','projectId','storageBucket','messagingSenderId','appId'];
+    if(required.some(k=>typeof firebaseConfig[k]!=='string'||!firebaseConfig[k].trim()||firebaseConfig[k].includes('여기에_')))throw appError('config-missing');
+    if(!navigator.onLine)throw appError('offline');
+    let timeout;
+    let modules;
+    try{
+      modules=await Promise.race([
+        Promise.all([
+          import('https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js')
+        ]),
+        new Promise((_,reject)=>{timeout=setTimeout(()=>reject(appError('sdk-load')),15000);})
+      ]);
+    }catch{throw appError('sdk-load');}finally{clearTimeout(timeout);}
+    const [appSDK,storeSDK]=modules;
+    const app=appSDK.getApps().length?appSDK.getApp():appSDK.initializeApp(firebaseConfig);
+    const db=storeSDK.getFirestore(app,FIRESTORE_DATABASE_ID);
+    return {db,...storeSDK};
+  })().catch(error=>{firebaseConnection=null;throw error;});
+  return firebaseConnection;
+}
+function toISO(value){
+  if(typeof value==='string')return value;
+  if(value&&typeof value.toDate==='function')return value.toDate().toISOString();
+  return null;
+}
+function normalizeResponse(data){
+  return {majorGroup:data.majorGroup,...Object.fromEntries(keys.map(k=>[k,data[k]])),
+    surveyStartedAt:toISO(data.surveyStartedAt),surveySubmittedAt:toISO(data.surveySubmittedAt),
+    durationSeconds:data.durationSeconds,createdAt:toISO(data.createdAt)};
+}
+// Firestore가 오프라인 요청을 대기시킬 수 있어 시간 초과를 '실패'로 간주하지 않습니다.
+// 서버 확인까지 버튼을 잠가 중복 제출을 막고, 늦은 성공/실패도 처리합니다.
+async function saveWithProgress(collectionName,makePayload,statusId){
+  if(!navigator.onLine)throw appError('offline');
+  const sdk=await getFirebase();
+  if(!navigator.onLine)throw appError('offline');
+  const slow=setTimeout(()=>{$(statusId).textContent='서버 저장 확인이 지연되고 있습니다. 인터넷 연결을 확인하고 이 페이지를 열어 두세요. 아직 제출 완료가 아닙니다.';},15000);
+  try{return await sdk.addDoc(sdk.collection(sdk.db,collectionName),makePayload(sdk));}
+  finally{clearTimeout(slow);}
+}
 const responseRepository={
-  async add(response){if(!validResponse(response))throw new Error('응답 형식을 확인해 주세요.');localStorage.setItem(RESPONSE_PREFIX+crypto.randomUUID(),JSON.stringify(response));window.dispatchEvent(new Event('survey-response-change'));},
-  subscribe(onData,onError){const update=()=>{try{onData(readLocalResponses());}catch(e){onError(e);}};const storage=e=>{if(e.key===null||e.key.startsWith(RESPONSE_PREFIX))update();};window.addEventListener('storage',storage);window.addEventListener('survey-response-change',update);update();return()=>{window.removeEventListener('storage',storage);window.removeEventListener('survey-response-change',update);};}
+  async add(response){
+    if(!validResponse(response))throw appError('invalid-response');
+    await saveWithProgress('responses',sdk=>({
+      majorGroup:response.majorGroup,...Object.fromEntries(keys.map(k=>[k,response[k]])),
+      surveyStartedAt:response.surveyStartedAt,surveySubmittedAt:response.surveySubmittedAt,
+      durationSeconds:response.durationSeconds,createdAt:sdk.serverTimestamp()
+    }),'surveyStatus');
+  },
+  subscribe(onData,onError){
+    let cancelled=false,stop=null;
+    const waiting=setTimeout(()=>{if(!cancelled)connectionMessage('결과 서버 연결이 지연되고 있습니다. 인터넷 연결을 확인해 주세요.',true);},15000);
+    getFirebase().then(sdk=>{
+      if(cancelled)return;
+      stop=sdk.onSnapshot(sdk.collection(sdk.db,'responses'),{includeMetadataChanges:true},snapshot=>{
+        if(cancelled)return;
+        if(snapshot.metadata.fromCache){
+          connectionMessage(state.hasSnapshot?'연결을 확인하고 있습니다. 현재는 마지막으로 수신한 결과를 표시합니다.':'서버에서 결과를 가져오고 있습니다. 아직 집계가 확인되지 않았습니다.',true);
+          return;
+        }
+        clearTimeout(waiting);
+        const rows=[];let invalid=0;
+        for(const document of snapshot.docs){
+          if(document.metadata.hasPendingWrites)continue; // 서버가 확인하지 않은 로컬 쓰기는 집계하지 않습니다.
+          try{const row=normalizeResponse(document.data());if(validResponse(row))rows.push(row);else invalid++;}catch{invalid++;}
+        }
+        state.hasSnapshot=true;
+        connectionMessage(invalid?`서버 연결됨 · 형식이 올바르지 않은 ${invalid}개 응답은 집계에서 제외되었습니다.`:'서버 연결됨 · 새로운 응답이 결과에 자동으로 반영됩니다.');
+        onData(rows);
+      },error=>{clearTimeout(waiting);if(!cancelled)onError(error);});
+    }).catch(error=>{clearTimeout(waiting);if(!cancelled)onError(error);});
+    return()=>{cancelled=true;clearTimeout(waiting);if(stop)stop();};
+  }
 };
-// 연락처는 페이지 메모리에만 보관. 응답과 ID·시간·전공 정보를 공유하지 않습니다.
-const rewardRepository=(()=>{const contacts=new Map();return{async add(contact){contacts.set(crypto.randomUUID(),{name:contact.name,phone:contact.phone});}};})();
+const rewardRepository={
+  async add(contact){
+    const name=String(contact.name||'').trim(),phone=normalizePhone(String(contact.phone||''));
+    if(!name||name.length>40||!validPhone(phone))throw appError('invalid-contact');
+    await saveWithProgress('rewardContacts',sdk=>({name,phone,createdAt:sdk.serverTimestamp()}),'rewardStatus');
+  }
+};
 
 $('majorOptions').innerHTML=MAJORS.map(m=>`<label class="choice"><input type="radio" name="majorGroup" value="${m}" required><span>${m}</span></label>`).join('');
 $('questions').innerHTML=QUESTIONS.map((q,i)=>`<fieldset class="card question"><legend><span class="qnum">Q${i+1}</span>${q}</legend><div class="scale">${SCALE.map((s,j)=>`<label class="choice"><input type="radio" name="q${i+1}" value="${j+1}" aria-label="${j+1} = ${s}" required><span><b>${j+1}</b><small>${s}</small></span></label>`).join('')}</div><div class="scale-guide"><span>← 영향이 적음</span><span>영향이 큼 →</span></div></fieldset>`).join('');
@@ -95,20 +206,81 @@ function updateTimer(){const s=elapsedSeconds();$('timer').textContent=`현재 �
 updateTimer();const timerInterval=setInterval(updateTimer,1000);
 function updateProgress(){const data=new FormData($('surveyForm'));const count=['majorGroup',...keys].filter(k=>data.has(k)).length;$('progress').value=count;$('progressText').textContent=`${count} / 7 완료`;$('submitSurvey').disabled=count!==7||state.submitting||!!state.mine;if(!state.mine)$('surveyStatus').textContent=count===7?'모든 문항에 응답했습니다. 제출 후 결과를 확인할 수 있어요.':'전공 계열과 6개 문항을 모두 선택해 주세요.';}
 $('surveyForm').addEventListener('change',updateProgress);
-$('surveyForm').addEventListener('submit',async e=>{e.preventDefault();if(state.submitting||state.mine||!e.target.reportValidity())return;const data=new FormData(e.target);const surveySubmittedAt=new Date().toISOString();const response={majorGroup:data.get('majorGroup'),...Object.fromEntries(keys.map(k=>[k,Number(data.get(k))])),surveyStartedAt:window.surveyStartedAt,surveySubmittedAt,durationSeconds:elapsedSeconds(),createdAt:surveySubmittedAt};state.submitting=true;$('submitSurvey').disabled=true;$('surveyStatus').textContent='응답을 저장하고 있습니다…';try{await responseRepository.add(response);state.mine=response;clearInterval(timerInterval);const duration=`설문 응답 시간: ${Math.floor(response.durationSeconds/60)}분 ${response.durationSeconds%60}초`;$('timer').textContent=duration;$('durationText').textContent=duration;e.target.querySelectorAll('input').forEach(input=>input.disabled=true);$('submitSurvey').textContent='응답 제출 완료';$('surveyStatus').textContent='감사합니다. 응답이 이 브라우저에 저장되었습니다.';$('surveyStatus').classList.remove('error');$('results').hidden=false;renderResults();$('resultTitle').focus({preventScroll:true});$('results').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});}catch(err){$('surveyStatus').classList.add('error');$('surveyStatus').textContent='저장하지 못했습니다. 브라우저의 사이트 저장 공간 허용 여부를 확인하고 다시 제출해 주세요.';$('submitSurvey').disabled=false;}finally{state.submitting=false;}});
+$('surveyForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(state.submitting||state.mine||!e.target.reportValidity())return;
+  const form=e.target,data=new FormData(form),surveySubmittedAt=new Date().toISOString();
+  const response={majorGroup:data.get('majorGroup'),...Object.fromEntries(keys.map(k=>[k,Number(data.get(k))])),surveyStartedAt:window.surveyStartedAt,surveySubmittedAt,durationSeconds:elapsedSeconds(),createdAt:surveySubmittedAt};
+  state.submitting=true;
+  form.querySelectorAll('input').forEach(input=>input.disabled=true);
+  $('submitSurvey').disabled=true;
+  $('surveyStatus').classList.remove('error');
+  $('surveyStatus').textContent='응답을 서버에 저장하고 있습니다…';
+  try{await responseRepository.add(response);}
+  catch(error){
+    $('surveyStatus').classList.add('error');
+    $('surveyStatus').textContent=errorMessage(error)+' 응답은 제출 완료되지 않았습니다.';
+    form.querySelectorAll('input').forEach(input=>input.disabled=false);
+    $('submitSurvey').disabled=false;
+    state.submitting=false;
+    return;
+  }
+  // 저장 성공과 화면 갱신을 분리해 그래프 오류가 중복 제출로 이어지지 않게 합니다.
+  state.submitting=false;state.mine=response;
+  clearInterval(timerInterval);
+  const duration=`설문 응답 시간: ${Math.floor(response.durationSeconds/60)}분 ${response.durationSeconds%60}초`;
+  $('timer').textContent=duration;$('durationText').textContent=duration;
+  $('submitSurvey').textContent='응답 제출 완료';
+  $('surveyStatus').textContent='감사합니다. 응답이 서버에 저장되었습니다.';
+  $('results').hidden=false;
+  renderResults();
+  $('resultTitle').focus({preventScroll:true});
+  $('results').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+});
 function averages(rows){return keys.map(k=>rows.length?rows.reduce((sum,r)=>sum+r[k],0)/rows.length:null);}
 function number(value){return value===null?'응답 없음':value.toFixed(2);}
 function renderTable(id,columns){$(id).innerHTML=`<table><caption>활동별 점수 (5점 만점)</caption><thead><tr><th scope="col">활동</th>${columns.map(c=>`<th scope="col">${c.label}</th>`).join('')}</tr></thead><tbody>${LABELS.map((label,i)=>`<tr><th scope="row">${label}</th>${columns.map(c=>`<td>${number(c.data[i])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;}
-function drawChart(id,datasets){if(!window.Chart)return;const data=datasets.map(d=>({...d,borderRadius:5,maxBarThickness:22}));if(state.charts[id]){state.charts[id].data.datasets=data;state.charts[id].update();return;}state.charts[id]=new Chart($(id),{type:'bar',data:{labels:LABELS,datasets:data},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:matchMedia('(prefers-reduced-motion: reduce)').matches?false:{duration:300},scales:{x:{min:0,max:5,ticks:{stepSize:1},grid:{color:'#edf1ee'}},y:{grid:{display:false},ticks:{color:'#40594f',font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:8,font:{size:12}}},tooltip:{callbacks:{label:context=>`${context.dataset.label}: ${number(context.parsed.x)}점`}}}}});}
-function renderResults(){if(!state.mine)return;const all=averages(state.responses);$('totalCount').textContent=state.responses.length+'명';$('groupCount').textContent=new Set(state.responses.map(r=>r.majorGroup)).size+'개';const overall={label:'전체 평균',data:all,backgroundColor:'#176b58'};renderTable('overallTable',[overall]);drawChart('overallChart',[overall]);const major=$('majorFilter').value;const selected=major?state.responses.filter(r=>r.majorGroup===major):state.responses;const group=averages(selected);let summary=`${major||'전체'} · ${selected.length}명 응답`;if(selected.length){const max=Math.max(...group);const tops=LABELS.filter((_,i)=>Math.abs(group[i]-max)<1e-9);summary+=` · 가장 높은 영향: ${tops.join(', ')} (${number(max)}점${tops.length>1?', 공동':''})`;}else summary+=' · 아직 응답이 없습니다.';$('groupSummary').textContent=summary;const groupSets=major?[{label:major,data:group,backgroundColor:'#176b58'},{...overall,backgroundColor:'#a9bdb5'}]:[overall];renderTable('majorTable',groupSets);drawChart('majorChart',groupSets);const personal=[{label:'나의 응답',data:keys.map(k=>state.mine[k]),backgroundColor:'#d4a154'},{...overall,backgroundColor:'#176b58'}];renderTable('personalTable',personal);drawChart('personalChart',personal);$('chartStatus').textContent=window.Chart?'':'그래프 라이브러리를 불러오지 못했습니다. 아래 표에서 모든 결과를 확인할 수 있습니다. 인터넷 연결 후 페이지를 다시 열면 그래프가 표시됩니다.';}
+function drawChart(id,datasets){if(!window.Chart)return;try{const data=datasets.map(d=>({...d,borderRadius:5,maxBarThickness:22}));if(state.charts[id]){state.charts[id].data.datasets=data;state.charts[id].update();return;}state.charts[id]=new Chart($(id),{type:'bar',data:{labels:LABELS,datasets:data},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:matchMedia('(prefers-reduced-motion: reduce)').matches?false:{duration:300},scales:{x:{min:0,max:5,ticks:{stepSize:1},grid:{color:'#edf1ee'}},y:{grid:{display:false},ticks:{color:'#40594f',font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:8,font:{size:12}}},tooltip:{callbacks:{label:context=>`${context.dataset.label}: ${number(context.parsed.x)}점`}}}}});}catch{$('chartStatus').textContent='그래프를 표시하지 못했습니다. 아래 표에서 결과를 확인해 주세요.';}}
+function renderResults(){if(!state.mine||!state.hasSnapshot)return;$('resultData').hidden=false;$('chartStatus').textContent=window.Chart?'':'그래프 라이브러리를 불러오지 못했습니다. 아래 표에서 모든 결과를 확인할 수 있습니다.';const all=averages(state.responses);$('totalCount').textContent=state.responses.length+'명';$('groupCount').textContent=new Set(state.responses.map(r=>r.majorGroup)).size+'개';const overall={label:'전체 평균',data:all,backgroundColor:'#176b58'};renderTable('overallTable',[overall]);drawChart('overallChart',[overall]);const major=$('majorFilter').value;const selected=major?state.responses.filter(r=>r.majorGroup===major):state.responses;const group=averages(selected);let summary=`${major||'전체'} · ${selected.length}명 응답`;if(selected.length){const max=Math.max(...group);const tops=LABELS.filter((_,i)=>Math.abs(group[i]-max)<1e-9);summary+=` · 가장 높은 영향: ${tops.join(', ')} (${number(max)}점${tops.length>1?', 공동':''})`;}else summary+=' · 아직 응답이 없습니다.';$('groupSummary').textContent=summary;const groupSets=major?[{label:major,data:group,backgroundColor:'#176b58'},{...overall,backgroundColor:'#a9bdb5'}]:[overall];renderTable('majorTable',groupSets);drawChart('majorChart',groupSets);const personal=[{label:'나의 응답',data:keys.map(k=>state.mine[k]),backgroundColor:'#d4a154'},{...overall,backgroundColor:'#176b58'}];renderTable('personalTable',personal);drawChart('personalChart',personal);}
 $('majorFilter').addEventListener('change',renderResults);
-const unsubscribe=responseRepository.subscribe(rows=>{state.responses=rows;renderResults();},()=>{$('surveyStatus').textContent='브라우저 저장소에 접근할 수 없습니다. 사이트 저장 공간을 허용한 후 다시 시도해 주세요.';});
+let unsubscribe=null;
+function startSubscription(){
+  if(unsubscribe)unsubscribe();
+  connectionMessage(state.hasSnapshot?'연결을 다시 확인하고 있습니다. 마지막 수신 결과를 표시합니다.':'서버 연결을 확인하고 있습니다…');
+  unsubscribe=responseRepository.subscribe(rows=>{state.responses=rows;renderResults();},error=>{
+    connectionMessage(errorMessage(error)+(state.hasSnapshot?' 현재는 마지막으로 수신한 결과를 표시합니다.':' 전체 결과를 아직 불러오지 못했습니다.'),true);
+  });
+}
+$('retryConnection').addEventListener('click',startSubscription);
+window.addEventListener('online',startSubscription);
+window.addEventListener('offline',()=>connectionMessage('인터넷 연결이 끊어졌습니다. 마지막 수신 결과는 유지되며, 연결이 복구되면 다시 갱신합니다.',true));
+window.addEventListener('pagehide',()=>{if(unsubscribe)unsubscribe();});
+window.addEventListener('pageshow',event=>{if(event.persisted)startSubscription();});
+window.addEventListener('beforeunload',event=>{if(state.submitting||state.rewardSubmitting){event.preventDefault();event.returnValue='';}});
+startSubscription();
 window.addEventListener('load',renderResults);
 function normalizePhone(value){return value.replace(/[\s-]/g,'');}
 function validPhone(value){return /^(010\d{8}|01[16789]\d{7,8})$/.test(value);}
 $('rewardPhone').addEventListener('input',()=>{$('rewardPhone').setCustomValidity('');});
 $('rewardName').addEventListener('input',()=>{$('rewardName').setCustomValidity('');});
-$('rewardForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('rewardName').value.trim();const phone=normalizePhone($('rewardPhone').value);$('rewardName').setCustomValidity(name?'':'이름을 입력해 주세요.');$('rewardPhone').setCustomValidity(validPhone(phone)?'':'휴대전화 번호 형식을 확인해 주세요. 예: 010-0000-0000');if(!e.target.reportValidity())return;$('submitReward').disabled=true;try{await rewardRepository.add({name,phone});e.target.reset();e.target.querySelectorAll('input').forEach(input=>input.disabled=true);$('rewardStatus').textContent='테스트 제출 완료. 정보는 이번 페이지 메모리에만 임시 보관되며, 실제 보상 신청은 접수되지 않았습니다.';}catch{$('rewardStatus').textContent='제출하지 못했습니다. 다시 시도해 주세요.';$('submitReward').disabled=false;}});
+$('rewardForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(state.rewardSubmitting||state.rewardSubmitted)return;
+  const form=e.target,name=$('rewardName').value.trim(),phone=normalizePhone($('rewardPhone').value);
+  $('rewardName').setCustomValidity(name?'':'이름을 입력해 주세요.');
+  $('rewardPhone').setCustomValidity(validPhone(phone)?'':'휴대전화 번호 형식을 확인해 주세요. 예: 010-0000-0000');
+  if(!form.reportValidity())return;
+  state.rewardSubmitting=true;$('submitReward').disabled=true;
+  form.querySelectorAll('input').forEach(input=>input.disabled=true);
+  $('rewardStatus').classList.remove('error');$('rewardStatus').textContent='연락처를 서버에 저장하고 있습니다…';
+  try{
+    await rewardRepository.add({name,phone});state.rewardSubmitted=true;form.reset();
+    $('submitReward').textContent='기프티콘 수령 정보 제출 완료';
+    $('rewardStatus').textContent='연락처가 별도로 저장되었습니다. 기프티콘 제공 및 발송 일정은 설문 운영자의 안내를 확인해 주세요.';
+  }catch(error){
+    $('rewardStatus').classList.add('error');$('rewardStatus').textContent=errorMessage(error)+' 연락처는 제출 완료되지 않았습니다.';
+    form.querySelectorAll('input').forEach(input=>input.disabled=false);$('submitReward').disabled=false;
+  }finally{state.rewardSubmitting=false;}
+});
 </script>
 </body>
 </html>
