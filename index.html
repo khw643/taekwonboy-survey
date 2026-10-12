@@ -55,7 +55,7 @@
     .hero>.notice{grid-column:1/-1;margin:0;padding:18px 0 23px;background:transparent;border-radius:0;font-size:12px;line-height:1.7;border-bottom:1px solid var(--line);color:var(--muted)}
     .hero>.notice strong{display:inline;margin-right:8px;color:var(--ink);font-size:13px}.hero>.notice .status{font-size:12px;min-height:0;margin:6px 0 0}
     #surveyForm,.reward,#results,.about{max-width:820px;margin-left:auto;margin-right:auto}
-    .section-top{margin-top:54px;margin-bottom:18px;align-items:flex-end}.section-top h2{font-size:25px}.section-top h2:before{content:'01 / SURVEY';display:block;font-size:10px;letter-spacing:.16em;color:var(--green);margin-bottom:10px;font-weight:600}
+    .section-top{margin-top:54px;margin-bottom:18px;align-items:flex-end}.section-top h2{font-size:25px}.section-top h2:before{content:'SURVEY';display:block;font-size:10px;letter-spacing:.16em;color:var(--green);margin-bottom:10px;font-weight:600}
     .progress-text{font-size:12px}.progress-text:before{content:'응답 진행  ';color:var(--muted)}
     progress{height:3px;border:0;background:var(--line);border-radius:0;margin-bottom:32px}progress::-webkit-progress-bar{background:var(--line)}progress::-webkit-progress-value{background:var(--green)}
     .card{border-radius:3px;border:1px solid var(--line);padding:28px;margin-bottom:25px;box-shadow:0 3px 0 #e7ece6}
@@ -76,7 +76,6 @@
     #results .card{padding:28px;border-top:2px solid var(--green)}#results h3{font-size:20px}#results .notice{border-radius:2px}.filter{display:block}table{font-variant-numeric:tabular-nums}thead{background:var(--light)}th,td{padding:12px 8px}
     .about{margin-top:65px;border-top:1px solid var(--green);padding-top:35px}.about h2{font-size:28px}.about h3{font-size:17px}.about p{font-size:14px;word-break:keep-all}.about ol{padding-left:20px}
     footer{max-width:1096px;margin:auto;display:flex;justify-content:space-between;gap:16px;text-align:left;padding:24px 0 30px;font-size:11px;border-top:1px solid var(--green);color:var(--muted)}footer strong{color:var(--green);font-weight:600}
-    @media(min-width:900px){.about{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:35px}.about>.eyebrow,.about>h2{grid-column:1}.about>h3,.about>p,.about>ol{grid-column:2}.about>h2{grid-row:2;align-self:start}.about>h3:first-of-type{grid-row:1/3;margin-top:0;align-self:end;padding-bottom:10px}.about>p{grid-row:3}.about>h3:nth-of-type(2){grid-row:4}.about>ol{grid-row:5}}
     @media(max-width:700px){.topbar>div{padding:17px 20px}.brand{font-size:13px;gap:10px}.brand-mark{font-size:25px;padding-right:10px}.brand small{font-size:8px}.tag{font-size:10px}main{padding:0 18px 44px}.hero{grid-template-columns:1fr;padding-top:35px;gap:0}.hero-copy{padding-bottom:22px}.hero-art{display:none}h1{font-size:clamp(30px,7vw,43px);line-height:1.35}.intro{font-size:14px}.eyebrow{font-size:10px;margin-bottom:17px}.meta{gap:8px 18px;padding:12px 0;font-size:12px}.meta .timer{width:100%;margin-left:0;font-size:12px}.meta strong{font-size:14px}.hero>.notice{padding:15px 0 20px}.section-top{margin-top:36px}.section-top h2{font-size:21px}.progress-text:before{content:''}.question{padding:17px 14px 20px}.question legend{font-size:15px;padding:0 7px}.qnum{margin-right:7px;font-size:12px}.card{margin-bottom:24px}.scale{gap:5px}.scale .choice span{padding:12px 3px;min-height:104px}.scale b{font-size:23px}.scale small{font-size:11px;word-break:keep-all}.major-grid .choice span{font-size:13px}.reward{padding:23px 18px;margin-top:34px}.reward h2{font-size:19px}.primary{min-width:0;width:100%}#results .card{padding:22px 14px}.result-heading h2{font-size:25px}.stat{padding:17px}.stat strong{font-size:31px}footer{margin:0 18px;flex-direction:column;gap:5px}.about{margin-top:44px}.about h2{font-size:25px}.about p{font-size:14px}}
     @media(prefers-reduced-motion:reduce){.choice span,.primary,.secondary{transition:none}}
   
@@ -93,6 +92,17 @@
     #majorOtherField{grid-template-columns:1fr;margin-bottom:0;gap:8px}
     #reward,#results{scroll-margin-top:140px}#skipReward{margin:12px 0 0 8px}
     @media(max-width:700px){.topbar>div{padding:10px 16px}.brand{flex-basis:100%;font-size:13px}.brand-mark{width:42px;height:42px}.brand small{font-size:11px}#timer{padding:5px 10px;font-size:11px}.question{padding:20px 14px}.question h3{font-size:15px}#skipReward{margin-left:0}.scale small{font-size:10px}.scale .choice span{min-height:112px}}
+      #majorTitle{margin-bottom:7px}
+    .reward>p,.reward .consent{word-break:keep-all;overflow-wrap:break-word}
+    .about>.eyebrow{margin-bottom:10px;white-space:nowrap}
+    .about>h2{white-space:nowrap}
+    .hero-art .art-bottom{word-break:keep-all}
+    #minimumTimeHelp{margin-top:4px}
+    #topActivitiesTable table{table-layout:fixed}
+    #topActivitiesTable th:nth-child(1){width:23%}
+    #topActivitiesTable th:nth-child(2){width:43%;text-align:left}
+    #topActivitiesTable td:nth-child(2){text-align:left;word-break:keep-all}
+    #topActivitiesTable th:nth-child(3),#topActivitiesTable th:nth-child(4){width:17%}
   </style>
 </head>
 <body>
@@ -100,11 +110,11 @@
 <main>
   <section class="hero" aria-labelledby="title">
     <div class="hero-copy">
-    <p class="eyebrow">경험에서 시작되는, 나의 다음 방향</p>
+    <p class="eyebrow">SURVEY TOPIC</p>
     <h1 id="title">대학 활동이 대학생의<br><em>진로 선택</em>에 미친 영향</h1>
     <p class="intro">대학생들이 대학생활 중 경험하는 다양한 활동이 자신의 진로 선택과 구체화에 어느 정도 영향을 미쳤는지 알아보기 위한 설문입니다. 특히 전공 계열에 따라 어떤 대학 활동의 영향력이 다르게 나타나는지 비교하고자 합니다.</p>
     </div>
-    <aside class="hero-art" aria-hidden="true"><span class="art-top">EXPERIENCE<br>SHAPES DIRECTION.</span><svg viewBox="0 0 210 175" fill="none"><path d="M17 148V104C17 80 44 80 44 104V128C44 155 76 154 76 128V57C76 31 108 31 108 57V110C108 135 141 135 141 110V48C141 23 174 23 174 48V73" stroke="#ffffff" stroke-width="2"/><path d="M154 58L174 78L194 58" stroke="#ffffff" stroke-width="2"/><circle cx="17" cy="148" r="5" fill="#d9edce"/><circle cx="108" cy="57" r="5" fill="#d9edce"/><path d="M0 164H210" stroke="#ffffff44"/></svg><span class="art-bottom">서로 다른 대학생활,<br>저마다의 진로를 향해.</span></aside>
+    <aside class="hero-art" aria-hidden="true"><span class="art-top">EXPERIENCE<br>SHAPES DIRECTION.</span><svg viewBox="0 0 210 175" fill="none"><path d="M17 148V104C17 80 44 80 44 104V128C44 155 76 154 76 128V57C76 31 108 31 108 57V110C108 135 141 135 141 110V48C141 23 174 23 174 48V73" stroke="#ffffff" stroke-width="2"/><path d="M154 58L174 78L194 58" stroke="#ffffff" stroke-width="2"/><circle cx="17" cy="148" r="5" fill="#d9edce"/><circle cx="108" cy="57" r="5" fill="#d9edce"/><path d="M0 164H210" stroke="#ffffff44"/></svg><span class="art-bottom">건국, 세계를 이끌 녹색의 물결</span></aside>
     <div class="meta"><span>총 설문 문항: <strong>6개</strong></span></div>
     <div class="notice"><strong>안내사항</strong><div class="notice-body"><p>모든 문항은 필수입니다. 각 경험이 진로 선택에 미친 영향을 1~5점으로 선택해 주세요.</p><p>제출한 응답은 서버에 저장되며, 응답 제출 후 전체 결과와 전공 계열별 비교를 확인할 수 있습니다. 새로운 응답이 반영되면 결과도 자동으로 갱신됩니다.</p><p id="connectionStatus" class="status" role="status">서버 연결을 확인하고 있습니다…</p><button id="retryConnection" class="secondary" type="button" hidden>연결 다시 확인</button></div></div>
   </section>
@@ -115,7 +125,7 @@
     <fieldset class="card question" aria-labelledby="majorTitle"><h3 id="majorTitle"><span class="qnum">01</span>현재 전공 계열을 선택해주세요.</h3><p class="small">현재 원전공의 전공 계열을 선택해주세요. 다전공·복수전공·부전공을 이수 중인 경우에도 원전공을 기준으로 선택해주세요. · 필수</p><div id="majorOptions" class="major-grid"></div><div id="majorOtherField" class="fields" hidden><label for="majorOther">기타 전공 계열 또는 학과명 · 필수<input id="majorOther" name="majorOther" maxlength="80" disabled placeholder="예: 융합학부" aria-describedby="majorOtherHelp"></label><p id="majorOtherHelp" class="small">전공 정보만 입력해 주세요. 이름·학번·연락처는 적지 마세요.</p></div></fieldset>
     
     <div id="questions"></div>
-    <div class="submit-area"><button id="submitSurvey" class="primary" type="submit" disabled>응답 제출</button><p id="surveyStatus" class="status" role="status">전공 계열과 6개 문항을 모두 선택해 주세요.</p></div>
+    <div class="submit-area"><button id="submitSurvey" class="primary" type="submit" disabled>응답 제출</button><p id="surveyStatus" class="status" role="status">전공 계열과 6개 문항을 모두 선택해 주세요.</p><p id="minimumTimeHelp" class="small">문항을 충분히 읽고 응답해 주세요. 설문 참여 시간이 1분 이상이어야 제출할 수 있습니다.</p></div>
   </form>
   <section id="reward" class="card reward" aria-labelledby="rewardTitle">
     <h2 id="rewardTitle" tabindex="-1">기프티콘 수령 정보 (선택)</h2>
@@ -136,15 +146,16 @@
     <p id="chartStatus" class="status error" role="status"></p>
     <article class="card"><h3>전체 응답 결과</h3><p class="small">활동별 평균 점수 · 평균이 높은 순 · 점수가 높을수록 색상이 진합니다.</p><div class="chart-wrap"><canvas id="overallChart" role="img" aria-label="활동별 전체 평균 막대그래프. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="overallTable" class="table-wrap"></div></article>
     <article class="card"><h3>전공 계열별 비교</h3><p class="small">선택한 계열의 평균이 높은 순으로 표시합니다. 점수가 높을수록 색상이 진합니다.</p><label class="filter small" for="majorFilter">비교할 전공 계열<select id="majorFilter"><option value="">전체</option></select></label><p id="groupSummary" class="notice" role="status"></p><div class="chart-wrap"><canvas id="majorChart" role="img" aria-label="선택 전공과 전체 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="majorTable" class="table-wrap"></div></article>
+    <article class="card"><h3>전공 계열별 가장 영향이 큰 활동</h3><p class="small">각 계열에서 평균이 가장 높은 활동을 비교합니다. 공동 1위는 모두 표시하며, 응답이 없는 계열도 함께 표시합니다.</p><div id="topActivitiesTable" class="table-wrap"></div></article>
     <article class="card"><h3>나의 응답과 평균 비교</h3><p class="small">비교 대상의 평균이 높은 순으로 표시합니다. 점수가 높을수록 색상이 진합니다.</p><label class="filter small" for="personalMajorFilter">내 응답과 비교할 전공 계열<select id="personalMajorFilter"><option value="">전체</option></select></label><p id="personalSummary" class="notice" role="status"></p><div class="chart-wrap comparison"><canvas id="personalChart" role="img" aria-label="본인 응답과 선택한 계열의 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="personalTable" class="table-wrap"></div></article>
     <p class="small">평균은 소수 둘째 자리까지 표시합니다. 응답이 없는 계열은 0점 대신 ‘응답 없음’으로 표시합니다. 표본 수와 참여 경험의 차이를 함께 고려해야 하며, 이 결과만으로 인과관계나 전체 대학생의 경향을 단정할 수 없습니다.</p>
     </div>
   </section>
   <section class="about" aria-labelledby="aboutTitle"><p class="eyebrow">BEHIND THE SURVEY</p><h2 id="aboutTitle">이 설문에 대하여</h2>
-    <h3>문항을 선택한 이유</h3><p>대학생활은 단순히 전공 지식을 배우는 것을 넘어 자신의 진로를 탐색하고 구체화하는 과정이라고 생각했다. 나 역시 대학에 입학하기 전부터 법조인이라는 진로에 관심을 가지고 있었지만, 건국법학회 활동을 통해 법학 관련 공부와 토론을 직접 경험하면서 로스쿨 진학이라는 구체적인 목표를 세우게 되었다. 이러한 경험을 바탕으로 다른 대학생들은 전공 수업, 동아리와 학회, 학생회, 대외활동, 대학에서 형성된 인간관계 등 다양한 대학 활동 중 어떤 경험의 영향을 받아 자신의 진로를 결정하거나 구체화하게 되었는지 알아보고자 본 설문 문항을 구성하였다. 또한 전공 계열별로 영향을 많이 받는 대학 활동에 차이가 있는지도 확인하고자 하였다.</p>
-    <h3>추가 기능과 그 이유</h3><ol><li><strong>설문 응답 시간 측정</strong><p>설문 시작부터 제출까지의 시간을 실시간으로 측정하고 기록할 수 있도록 하였다. 설문 응답 시간이 지나치게 짧은 경우 문항을 충분히 읽지 않고 응답했을 가능성을 확인할 수 있기 때문에, 향후 설문 결과를 분석할 때 불성실 응답을 판단하는 보조적인 자료로 활용할 수 있도록 하기 위한 기능이다.</p><p>응답 시간만으로 불성실 응답을 단정하거나 응답을 자동으로 삭제하지 않는다. 측정 시간에는 페이지를 열어 둔 시간도 포함된다.</p></li><li><strong>기프티콘 수령 정보 별도 입력</strong><p>실제 설문조사에서는 참여자에게 감사의 의미로 소정의 기프티콘이나 보상을 제공하는 경우가 있다는 점을 고려하여 이름과 전화번호를 선택적으로 입력할 수 있는 별도의 영역을 추가하였다. 개인정보가 설문 분석 결과와 함께 활용되지 않도록 설문 응답과 연락처 정보를 분리하여 관리하는 구조로 설계하였다.</p></li></ol>
+    <h3>문항을 선택한 이유</h3><p>이 설문을 통해 가장 확인하고 싶었던 것은 전공 계열에 따라 어떤 대학 활동이 자신의 진로 선택에 더 큰 영향을 미치는가입니다. 저는 대학 입학 전부터 법조인이라는 진로에 관심은 가지고 있었지만, 건국법학회 활동을 통해 법학 관련 공부와 토론을 직접 경험하면서 로스쿨 진학이라는 구체적인 목표를 세우게 되었습니다. 이러한 경험을 바탕으로 다른 학우들이 자신의 전공과 대학생활 속 경험에 따라 진로를 결정하거나 구체화하는 과정이 궁금했습니다. 이를 확인하기 위해 대학생이 경험할 수 있는 주요 활동을 전공 수업 및 학습, 동아리·학회, 학생회 및 자치활동, 대외활동·인턴, 대학 내 인간관계 등으로 구분하여 각각이 진로 선택에 미친 영향을 5점 척도로 측정하도록 문항을 구성하였습니다. 이렇게 여러 활동을 구분한 이유는 단순히 대학생활 전체의 영향 정도를 확인하는 데 그치지 않고, 전공 계열별로 어떤 활동의 평균이 상대적으로 높게 나타나는지를 비교하기 위해서입니다. 예를 들어 어떤 전공 계열에서는 전공 학습이 진로 선택에 가장 큰 영향을 줄 수 있고, 다른 전공 계열에서는 동아리나 대외활동이 더 큰 영향을 줄 수 있다는 차이를 확인하고자 하였습니다.</p>
+    <h3>추가 기능과 그 이유</h3><ol><li><strong>설문 응답 시간 측정</strong><p>설문 시작부터 제출까지의 시간을 실시간으로 측정하고 기록할 수 있도록 하였다. 설문 응답 시간이 지나치게 짧은 경우 문항을 충분히 읽지 않고 응답했을 가능성을 확인할 수 있기 때문에, 향후 설문 결과를 분석할 때 불성실 응답을 판단하는 보조적인 자료로 활용할 수 있도록 하기 위한 기능이다.</p><p>응답 시간만으로 불성실 응답을 단정하거나 응답을 자동으로 삭제하지 않는다. 측정 시간에는 페이지를 열어 둔 시간도 포함된다. 문항을 읽을 시간을 확보하기 위해 필수 응답을 모두 마쳐도 참여 시간이 1분 이상일 때 제출 버튼이 활성화되도록 하였다.</p></li><li><strong>기프티콘 수령 정보 별도 입력</strong><p>실제 설문조사에서는 참여자에게 감사의 의미로 소정의 기프티콘이나 보상을 제공하는 경우가 있다는 점을 고려하여 이름과 전화번호를 선택적으로 입력할 수 있는 별도의 영역을 추가하였다. 개인정보가 설문 분석 결과와 함께 활용되지 않도록 설문 응답과 연락처 정보를 분리하여 관리하는 구조로 설계하였다.</p></li></ol>
   </section>
-</main><footer><strong>건국대학교 수업 프로젝트 · 대학 활동과 진로 선택</strong><span>학생이 제작한 설문 페이지입니다.</span></footer>
+</main><footer><strong>건국대학교 수업 프로젝트 · 대학 활동과 진로 선택</strong></footer>
 <script>
 'use strict';
 const MAJORS=['인문계열','사회과학계열','경영·경제계열','자연과학계열','공학계열','예체능계열','의약·보건계열','기타'];
@@ -228,7 +239,7 @@ async function saveWithProgress(collectionName,makePayload,statusId){
 }
 const responseRepository={
   async add(response){
-    if(!validResponse(response)||(response.majorGroup==='기타'&&!response.majorOther?.trim()))throw appError('invalid-response');
+    if(!validResponse(response)||response.durationSeconds<MINIMUM_DURATION_SECONDS||(response.majorGroup==='기타'&&!response.majorOther?.trim()))throw appError('invalid-response');
     await saveWithProgress('responses',sdk=>({
       majorGroup:response.majorGroup,...(response.majorGroup==='기타'?{majorOther:response.majorOther}:{}),...Object.fromEntries(keys.map(k=>[k,response[k]])),
       surveyStartedAt:response.surveyStartedAt,surveySubmittedAt:response.surveySubmittedAt,
@@ -271,9 +282,18 @@ const rewardRepository={
 $('majorOptions').innerHTML=MAJORS.map(m=>`<label class="choice"><input type="radio" name="majorGroup" value="${m}" required><span>${majorLabel(m)}</span></label>`).join('');
 $('questions').innerHTML=QUESTIONS.map((q,i)=>`<fieldset class="card question" aria-labelledby="questionTitle${i+1}"><h3 id="questionTitle${i+1}"><span class="qnum">Q${i+1}</span>${q}</h3><div class="scale">${SCALE.map((s,j)=>`<label class="choice"><input type="radio" name="q${i+1}" value="${j+1}" aria-label="${j+1} = ${s}" required><span><b>${j+1}</b><small>${s}</small></span></label>`).join('')}</div><div class="scale-guide"><span>← 영향이 적음</span><span>영향이 큼 →</span></div></fieldset>`).join('');
 for(const id of ['majorFilter','personalMajorFilter'])for(const m of MAJORS)$(id).add(new Option(majorLabel(m),m));
+const MINIMUM_DURATION_SECONDS=60;
 function elapsedSeconds(){return Math.max(0,Math.floor((performance.now()-window.surveyStartClock)/1000));}
-function updateTimer(){const s=elapsedSeconds();$('timer').textContent=`현재 설문 참여 시간 ${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
+function updateTimer(){const s=elapsedSeconds();$('timer').textContent=`현재 설문 참여 시간 ${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;updateSubmitAvailability();}
 updateTimer();const timerInterval=setInterval(updateTimer,1000);
+function updateSubmitAvailability(){
+  if(state.mine||state.submitting)return;
+  const data=new FormData($('surveyForm'));
+  const complete=['majorGroup',...keys].every(k=>data.has(k))&&(data.get('majorGroup')!=='기타'||!!$('majorOther').value.trim());
+  const remaining=Math.max(0,MINIMUM_DURATION_SECONDS-elapsedSeconds());
+  $('submitSurvey').disabled=!complete||remaining>0;
+  $('minimumTimeHelp').textContent='문항을 충분히 읽고 응답해 주세요. 설문 참여 시간이 1분 이상이어야 제출할 수 있습니다.'+(remaining?' (남은 시간: '+remaining+'초)':' (시간 조건 충족)');
+}
 function updateProgress(){
   const data=new FormData($('surveyForm')),other=data.get('majorGroup')==='기타';
   $('majorOtherField').hidden=!other;$('majorOther').required=other;
@@ -282,14 +302,16 @@ function updateProgress(){
   $('majorOther').setCustomValidity(otherValid?'':'기타 전공 계열 또는 학과명을 입력해 주세요.');
   const count=['majorGroup',...keys].filter(k=>data.has(k)).length;
   $('progress').value=count;
-  $('submitSurvey').disabled=count!==7||!otherValid||state.submitting||!!state.mine;
+  updateSubmitAvailability();
   if(!state.mine)$('surveyStatus').textContent=count===7&&otherValid?'모든 문항에 응답했습니다. 제출 후 선택 정보를 입력할 수 있어요.':'전공 계열과 6개 문항을 모두 선택해 주세요. 기타 선택 시 전공도 입력해 주세요.';
 }
 $('surveyForm').addEventListener('change',updateProgress);
 $('majorOther').addEventListener('input',updateProgress);
 $('surveyForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  if(state.submitting||state.mine||!e.target.reportValidity())return;
+  if(state.submitting||state.mine)return;
+  if(elapsedSeconds()<MINIMUM_DURATION_SECONDS){updateSubmitAvailability();return;}
+  if(!e.target.reportValidity())return;
   const form=e.target,data=new FormData(form),surveySubmittedAt=new Date().toISOString();
   const response={majorGroup:data.get('majorGroup'),...(data.get('majorGroup')==='기타'?{majorOther:data.get('majorOther').trim()}:{}),...Object.fromEntries(keys.map(k=>[k,Number(data.get(k))])),surveyStartedAt:window.surveyStartedAt,surveySubmittedAt,durationSeconds:elapsedSeconds(),createdAt:surveySubmittedAt};
   state.submitting=true;
@@ -312,6 +334,7 @@ $('surveyForm').addEventListener('submit',async e=>{
   clearInterval(timerInterval);
   const duration=`설문 응답 시간: ${Math.floor(response.durationSeconds/60)}분 ${response.durationSeconds%60}초`;
   $('timer').textContent=duration;$('durationText').textContent=duration;
+  $('minimumTimeHelp').textContent='1분 이상 참여 후 응답이 제출되었습니다.';
   $('submitSurvey').textContent='응답 제출 완료';
   $('surveyStatus').textContent='감사합니다. 응답이 서버에 저장되었습니다.';
   $('results').hidden=false;
@@ -348,9 +371,20 @@ function drawChart(id,datasets,order){
     }});
   }catch{$('chartStatus').textContent='그래프를 표시하지 못했습니다. 아래 표에서 결과를 확인해 주세요.';}
 }
+function topActivities(rows){
+  return MAJORS.map(major=>{
+    const selected=rows.filter(r=>r.majorGroup===major),means=averages(selected);
+    const max=selected.length?Math.max(...means):null;
+    return {major,count:selected.length,score:max,activities:max===null?[]:LABELS.filter((_,i)=>Math.abs(means[i]-max)<1e-9)};
+  });
+}
+function renderTopActivities(){
+  $('topActivitiesTable').innerHTML='<table><caption>계열별 최고 평균 활동 · 5점 만점</caption><thead><tr><th scope="col">전공 계열</th><th scope="col">최고 평균 활동</th><th scope="col">평균</th><th scope="col">응답 수</th></tr></thead><tbody>'+topActivities(state.responses).map(r=>'<tr><th scope="row">'+majorLabel(r.major)+'</th><td>'+(r.activities.length?r.activities.join(' · ')+(r.activities.length>1?' (공동 1위)':''):'응답 없음')+'</td><td>'+number(r.score)+'</td><td>'+r.count+'명</td></tr>').join('')+'</tbody></table>';
+}
 function renderResults(){
   if(!state.mine||!state.hasSnapshot)return;
   $('resultData').hidden=false;
+  renderTopActivities();
   $('chartStatus').textContent=window.Chart?'':'그래프 라이브러리를 불러오지 못했습니다. 아래 표에서 모든 결과를 확인할 수 있습니다.';
   const all=averages(state.responses),overall={label:'전체 평균',data:all,palette:'green'},allOrder=ranking(all);
   $('totalCount').textContent=state.responses.length+'명';
