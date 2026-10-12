@@ -104,6 +104,10 @@
     #topActivitiesTable td:nth-child(2){text-align:left;word-break:keep-all}
     #topActivitiesTable th:nth-child(3),#topActivitiesTable th:nth-child(4){width:17%}
       #connectionStatus:not(.error),#resultsLiveStatus:not(.error){color:#1756b8;font-weight:750}
+      .major-comparison{border:0;padding:0;margin:20px 0 10px;min-width:0}
+    .major-comparison legend{font-size:13px;font-weight:650}
+    .major-comparison input:disabled+span{opacity:.45;cursor:not-allowed}
+    #majorTable table{min-width:340px}
   </style>
 </head>
 <body>
@@ -146,7 +150,7 @@
     <div class="stats"><div class="stat"><span class="small">전체 응답 수</span><strong id="totalCount">0명</strong></div><div class="stat"><span class="small">응답이 있는 전공 계열</span><strong id="groupCount">0개</strong></div></div>
     <p id="chartStatus" class="status error" role="status"></p>
     <article class="card"><h3>전체 응답 결과</h3><p class="small">활동별 평균 점수 · 평균이 높은 순 · 점수가 높을수록 색상이 진합니다.</p><div class="chart-wrap"><canvas id="overallChart" role="img" aria-label="활동별 전체 평균 막대그래프. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="overallTable" class="table-wrap"></div></article>
-    <article class="card"><h3>전공 계열별 비교</h3><p class="small">선택한 계열의 평균이 높은 순으로 표시합니다. 점수가 높을수록 색상이 진합니다.</p><label class="filter small" for="majorFilter">비교할 전공 계열<select id="majorFilter"><option value="">전체</option></select></label><p id="groupSummary" class="notice" role="status"></p><div class="chart-wrap"><canvas id="majorChart" role="img" aria-label="선택 전공과 전체 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="majorTable" class="table-wrap"></div></article>
+    <article class="card"><h3>전공 계열별 비교</h3><p class="small">비교할 전공 계열을 최대 3개 선택해 주세요. 활동마다 계열별 평균을 나란히 표시하며, 먼저 선택한 계열의 평균이 높은 순으로 정렬합니다. 색상은 계열을 구분하고, 같은 색에서 진할수록 점수가 높습니다.</p><fieldset class="major-comparison"><legend>비교할 전공 계열 · 최대 3개</legend><div id="majorCompareOptions" class="major-grid"></div></fieldset><p id="majorCompareHelp" class="small" role="status">0 / 3개 선택 · 두 계열 이상 선택하면 집단 간 차이를 비교할 수 있습니다.</p><p id="groupSummary" class="notice" role="status"></p><div id="majorChartWrap" class="chart-wrap comparison" hidden><canvas id="majorChart" role="img" aria-label="선택한 최대 세 전공 계열의 활동별 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="majorTable" class="table-wrap"></div></article>
     <article class="card"><h3>전공 계열별 진로 결정에 가장 도움이 된 활동</h3><p class="small">각 계열에서 평균이 가장 높은 활동을 비교합니다. 공동 1위는 모두 표시하며, 응답이 없는 계열도 함께 표시합니다.</p><div id="topActivitiesTable" class="table-wrap"></div></article>
     <article class="card"><h3>나의 응답과 평균 비교</h3><p class="small">비교 대상의 평균이 높은 순으로 표시합니다. 점수가 높을수록 색상이 진합니다.</p><label class="filter small" for="personalMajorFilter">내 응답과 비교할 전공 계열<select id="personalMajorFilter"><option value="">전체</option></select></label><p id="personalSummary" class="notice" role="status"></p><div class="chart-wrap comparison"><canvas id="personalChart" role="img" aria-label="본인 응답과 선택한 계열의 평균 비교. 정확한 수치는 아래 표를 참고하세요."></canvas></div><div id="personalTable" class="table-wrap"></div></article>
     <p class="small">평균은 소수 둘째 자리까지 표시합니다. 응답이 없는 계열은 0점 대신 ‘응답 없음’으로 표시합니다. 표본 수와 참여 경험의 차이를 함께 고려해야 하며, 이 결과만으로 인과관계나 전체 대학생의 경향을 단정할 수 없습니다.</p>
@@ -154,7 +158,7 @@
   </section>
   <section class="about" aria-labelledby="aboutTitle"><p class="eyebrow">BEHIND THE SURVEY</p><h2 id="aboutTitle">이 설문에 대하여</h2>
     <h3>문항을 선택한 이유</h3><p>이 설문을 통해 가장 확인하고 싶었던 것은 전공 계열에 따라 어떤 대학 활동이 자신의 진로 선택에 더 큰 영향을 미치는가입니다. 저는 대학 입학 전부터 법조인이라는 진로에 관심은 가지고 있었지만, 건국법학회 활동을 통해 법학 관련 공부와 토론을 직접 경험하면서 로스쿨 진학이라는 구체적인 목표를 세우게 되었습니다. 이러한 경험을 바탕으로 다른 학우들이 자신의 전공과 대학생활 속 경험에 따라 진로를 결정하거나 구체화하는 과정이 궁금했습니다. 이를 확인하기 위해 대학생이 경험할 수 있는 주요 활동을 전공 수업 및 학습, 동아리·학회, 학생회 및 자치활동, 대외활동·인턴, 대학 내 인간관계 등으로 구분하여 각각이 진로 선택에 미친 영향을 5점 척도로 측정하도록 문항을 구성하였습니다. 이렇게 여러 활동을 구분한 이유는 단순히 대학생활 전체의 영향 정도를 확인하는 데 그치지 않고, 전공 계열별로 어떤 활동의 평균이 상대적으로 높게 나타나는지를 비교하기 위해서입니다. 예를 들어 어떤 전공 계열에서는 전공 학습이 진로 선택에 가장 큰 영향을 줄 수 있고, 다른 전공 계열에서는 동아리나 대외활동이 더 큰 영향을 줄 수 있다는 차이를 확인하고자 하였습니다.</p>
-    <h3>추가 기능과 그 이유</h3><ol><li><strong>설문 응답 시간 측정 기능</strong><p>설문 문항을 충분히 읽지 않고 지나치게 짧은 시간 안에 응답한 경우에는 해당 응답의 신뢰성이 낮을 수 있다고 생각하여 설문 응답 시간 측정 기능을 추가하였습니다. 설문 참여자가 자신의 응답 시간을 실시간으로 확인할 수 있도록 하였고, 최소 1분 이상 응답한 이후에만 설문을 제출할 수 있도록 설정하였습니다. 이를 통해 응답자가 문항을 충분히 읽고 답변하도록 유도하고, 설문 결과의 신뢰성을 높이고자 하였습니다. 처음에는 응답 시간이 웹페이지 맨 위에만 표시되어 설문을 아래로 내려가며 작성할 경우 확인하기 불편했지만, 수정 과정을 거쳐 스크롤을 내려도 응답 시간이 함께 따라오도록 개선하였습니다.</p></li><li><strong>기프티콘 정보 입력 기능</strong><p>실제 설문조사에서는 참여에 대한 보상으로 기프티콘 등을 제공하기 위해 이름이나 전화번호와 같은 개인정보를 별도로 수집하는 경우가 많고, 저 역시 여러 설문에 참여하면서 이러한 방식을 자주 경험하였습니다. 이를 실제 설문 환경에 가깝게 구현하고자 설문 응답 영역과 별도로 이름과 전화번호를 입력할 수 있는 공간을 추가하였습니다. 또한 개인정보가 설문 결과와 함께 공개되거나 분석에 사용되지 않도록 설문 응답과 분리하여 별도의 Firebase 데이터베이스 영역에 저장되도록 설정하였습니다. 이를 통해 실제 설문조사에서 활용되는 보상 제공 방식을 구현하면서도 개인정보와 설문 응답을 구분하여 관리하고자 하였습니다.</p></li><li><strong>전공 계열 선택형 결과 비교 기능</strong><p>이 설문에서 전공 계열에 따라 어떤 대학 활동이 진로 선택에 더 큰 영향을 미쳤는지를 비교하는 것이 핵심이기 때문에 전공별 결과를 그래프로 확인할 수 있도록 하였습니다. 그러나 모든 전공 계열의 결과 그래프를 한 페이지에 동시에 표시하면 그래프가 지나치게 많아져 결과를 직관적으로 파악하기 어렵다고 생각하였습니다. 따라서 결과 화면에서 비교하고 싶은 전공 계열을 직접 선택할 수 있도록 기능을 추가하였습니다. 선택한 전공 계열의 평균과 전체 평균을 함께 보여줌으로써 해당 전공 학생들의 응답이 전체 학생들과 어떤 차이가 있는지를 보다 쉽게 확인할 수 있도록 하였습니다. 또한 자신의 응답과 전체 평균을 비교할 때도 전공 계열을 선택할 수 있도록 하여, 응답자가 자신의 경험이 전공 계열 평균과 어느 정도 차이가 있는지도 직관적으로 확인할 수 있도록 구성하였습니다.</p></li></ol>
+    <h3>추가 기능과 그 이유</h3><ol><li><strong>설문 응답 시간 측정 기능</strong><p>설문 문항을 충분히 읽지 않고 지나치게 짧은 시간 안에 응답한 경우에는 해당 응답의 신뢰성이 낮을 수 있다고 생각하여 설문 응답 시간 측정 기능을 추가하였습니다. 설문 참여자가 자신의 응답 시간을 실시간으로 확인할 수 있도록 하였고, 최소 1분 이상 응답한 이후에만 설문을 제출할 수 있도록 설정하였습니다. 이를 통해 응답자가 문항을 충분히 읽고 답변하도록 유도하고, 설문 결과의 신뢰성을 높이고자 하였습니다. 처음에는 응답 시간이 웹페이지 맨 위에만 표시되어 설문을 아래로 내려가며 작성할 경우 확인하기 불편했지만, 수정 과정을 거쳐 스크롤을 내려도 응답 시간이 함께 따라오도록 개선하였습니다.</p></li><li><strong>기프티콘 정보 입력 기능</strong><p>실제 설문조사에서는 참여에 대한 보상으로 기프티콘 등을 제공하기 위해 이름이나 전화번호와 같은 개인정보를 별도로 수집하는 경우가 많고, 저 역시 여러 설문에 참여하면서 이러한 방식을 자주 경험하였습니다. 이를 실제 설문 환경에 가깝게 구현하고자 설문 응답 영역과 별도로 이름과 전화번호를 입력할 수 있는 공간을 추가하였습니다. 또한 개인정보가 설문 결과와 함께 공개되거나 분석에 사용되지 않도록 설문 응답과 분리하여 별도의 Firebase 데이터베이스 영역에 저장되도록 설정하였습니다. 이를 통해 실제 설문조사에서 활용되는 보상 제공 방식을 구현하면서도 개인정보와 설문 응답을 구분하여 관리하고자 하였습니다.</p></li><li><strong>전공 계열 선택형 결과 비교 기능</strong><p>이 설문은 전공 계열에 따라 어떤 대학 활동이 진로 선택에 도움이 되었는지 비교하는 데 목적이 있습니다. 이를 위해 결과 화면에서 비교할 전공 계열을 최대 3개까지 직접 선택하고, 각 활동에 대한 계열별 평균을 하나의 그래프에서 나란히 확인할 수 있도록 하였습니다. 전체 평균과 비교하는 데 그치지 않고 전공 계열 간 차이를 직접 살펴볼 수 있으며, 그래프가 복잡해지지 않도록 선택 수를 3개로 제한하였습니다. 계열별 응답 수와 정확한 평균값을 표로 함께 제공하고, 새로운 응답이 들어오면 선택한 계열의 결과도 자동으로 갱신되도록 하였습니다. 또한 자신의 응답과 평균을 비교하는 그래프에서는 전체 또는 특정 전공 계열을 선택할 수 있도록 하여 개인의 경험과 집단 평균의 차이도 확인할 수 있게 하였습니다.</p></li></ol>
   </section>
 </main><footer><strong>건국대학교 수업 프로젝트 · 대학 활동과 진로 선택</strong></footer>
 <script>
@@ -282,7 +286,21 @@ const rewardRepository={
 
 $('majorOptions').innerHTML=MAJORS.map(m=>`<label class="choice"><input type="radio" name="majorGroup" value="${m}" required><span>${majorLabel(m)}</span></label>`).join('');
 $('questions').innerHTML=QUESTIONS.map((q,i)=>`<fieldset class="card question" aria-labelledby="questionTitle${i+1}"><h3 id="questionTitle${i+1}"><span class="qnum">Q${i+1}</span>${q}</h3><div class="scale">${SCALE.map((s,j)=>`<label class="choice"><input type="radio" name="q${i+1}" value="${j+1}" aria-label="${j+1} = ${s}" required><span><b>${j+1}</b><small>${s}</small></span></label>`).join('')}</div><div class="scale-guide"><span>← 도움이 적음</span><span>도움이 큼 →</span></div></fieldset>`).join('');
-for(const id of ['majorFilter','personalMajorFilter'])for(const m of MAJORS)$(id).add(new Option(majorLabel(m),m));
+for(const m of MAJORS)$('personalMajorFilter').add(new Option(majorLabel(m),m));
+const comparisonMajors=[];
+$('majorCompareOptions').innerHTML=MAJORS.map(m=>'<label class="choice"><input type="checkbox" name="compareMajor" value="'+m+'"><span>'+majorLabel(m)+'</span></label>').join('');
+function updateMajorSelection(){
+  $('majorCompareOptions').querySelectorAll('input').forEach(input=>{input.checked=comparisonMajors.includes(input.value);input.disabled=comparisonMajors.length>=3&&!input.checked;});
+  $('majorCompareHelp').textContent=comparisonMajors.length+' / 3개 선택 · '+(comparisonMajors.length===3?'다른 계열을 선택하려면 기존 선택을 하나 해제해 주세요.':'두 계열 이상 선택하면 집단 간 차이를 비교할 수 있습니다.');
+}
+$('majorCompareOptions').addEventListener('change',event=>{
+  const input=event.target;if(input.name!=='compareMajor')return;
+  const index=comparisonMajors.indexOf(input.value);
+  if(input.checked&&index<0&&comparisonMajors.length<3)comparisonMajors.push(input.value);
+  else if(!input.checked&&index>=0)comparisonMajors.splice(index,1);
+  updateMajorSelection();renderResults();
+});
+
 const MINIMUM_DURATION_SECONDS=60;
 function elapsedSeconds(){return Math.max(0,Math.floor((performance.now()-window.surveyStartClock)/1000));}
 function updateTimer(){const s=elapsedSeconds();$('timer').textContent=`현재 설문 참여 시간 ${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;updateSubmitAvailability();}
@@ -384,6 +402,25 @@ function topActivities(rows){
 function renderTopActivities(){
   $('topActivitiesTable').innerHTML='<table><caption>계열별 최고 평균 활동 · 5점 만점</caption><thead><tr><th scope="col">전공 계열</th><th scope="col">최고 평균 활동</th><th scope="col">평균</th><th scope="col">응답 수</th></tr></thead><tbody>'+topActivities(state.responses).map(r=>'<tr><th scope="row">'+majorLabel(r.major)+'</th><td>'+(r.activities.length?r.activities.join(' · ')+(r.activities.length>1?' (공동 1위)':''):'응답 없음')+'</td><td>'+number(r.score)+'</td><td>'+r.count+'명</td></tr>').join('')+'</tbody></table>';
 }
+function comparisonData(rows,majors){
+  return majors.map((major,i)=>{
+    const selected=rows.filter(r=>r.majorGroup===major);
+    return {label:majorLabel(major)+' 평균',data:averages(selected),palette:['green','orange','slate'][i],count:selected.length};
+  });
+}
+function renderMajorComparison(){
+  const sets=comparisonData(state.responses,comparisonMajors);
+  $('majorChartWrap').hidden=sets.length===0;
+  if(!sets.length){
+    $('groupSummary').textContent='위에서 비교할 전공 계열을 선택해 주세요.';
+    $('majorTable').innerHTML='';
+    if(state.charts.majorChart){state.charts.majorChart.destroy();delete state.charts.majorChart;}
+    return;
+  }
+  $('groupSummary').textContent=sets.map(s=>s.label+' · '+s.count+'명'+(s.count?'':' (응답 없음)')).join(' / ')+' · 정렬 기준: '+majorLabel(comparisonMajors[0])+' 평균'+(sets[0].count?'':' (응답이 없어 문항 순서로 표시)');
+  const order=ranking(sets[0].data);
+  renderTable('majorTable',sets,order);drawChart('majorChart',sets,order);
+}
 function renderResults(){
   if(!state.mine||!state.hasSnapshot)return;
   $('resultData').hidden=false;
@@ -393,21 +430,13 @@ function renderResults(){
   $('totalCount').textContent=state.responses.length+'명';
   $('groupCount').textContent=new Set(state.responses.map(r=>r.majorGroup)).size+'개';
   renderTable('overallTable',[overall],allOrder);drawChart('overallChart',[overall],allOrder);
-  const major=$('majorFilter').value,selected=major?state.responses.filter(r=>r.majorGroup===major):state.responses,group=averages(selected);
-  let summary=(majorLabel(major)||'전체')+' · '+selected.length+'명 응답';
-  if(selected.length){
-    const max=Math.max(...group),tops=LABELS.filter((_,i)=>Math.abs(group[i]-max)<1e-9);
-    summary+=' · 가장 도움이 된 활동: '+tops.join(', ')+' ('+number(max)+'점'+(tops.length>1?', 공동':'')+')';
-  }else summary+=' · 아직 응답이 없습니다. 전체 평균 순으로 표시합니다.';
-  $('groupSummary').textContent=summary;
-  const groupSets=major?[{label:majorLabel(major)+' 평균',data:group,palette:'green'},{...overall,palette:'slate'}]:[overall],groupOrder=ranking(selected.length?group:all);
-  renderTable('majorTable',groupSets,groupOrder);drawChart('majorChart',groupSets,groupOrder);
+  renderMajorComparison();
   const personalMajor=$('personalMajorFilter').value,referenceRows=personalMajor?state.responses.filter(r=>r.majorGroup===personalMajor):state.responses,reference=averages(referenceRows);
   $('personalSummary').textContent=(majorLabel(personalMajor)||'전체')+' · '+referenceRows.length+'명 응답'+(referenceRows.length?' · 본인 응답과 비교':' · 아직 응답이 없습니다. 전체 평균 순으로 표시합니다.');
   const personal=[{label:'나의 응답',data:keys.map(k=>state.mine[k]),palette:'orange'},{label:(majorLabel(personalMajor)||'전체')+' 평균',data:reference,palette:'green'}],personalOrder=ranking(referenceRows.length?reference:all);
   renderTable('personalTable',personal,personalOrder);drawChart('personalChart',personal,personalOrder);
 }
-$('majorFilter').addEventListener('change',renderResults);
+
 $('personalMajorFilter').addEventListener('change',renderResults);
 let unsubscribe=null;
 function startSubscription(){
